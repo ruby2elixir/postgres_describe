@@ -1,19 +1,33 @@
 defmodule PostgresDescribe.Mixfile do
   use Mix.Project
 
+  @app     :postgres_describe
+  @name    "PostgresDescribe"
+  @version "0.1.0"
+  @github  "https://github.com/brandonparsons/#{@app}"
+
   def project do
     [
-      app: :postgres_describe,
-      version: "0.1.0",
+      app: @app,
+      version: @version,
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
-      deps: deps(),
+      description: description(),
       package: package(),
-      description: description()
+      deps: deps(),
+
+      # ExDoc
+      name: @name,
+      source_url: @github,
+      homepage_url: @github,
+      docs: [
+        main: @name,
+        canonical: "https://hexdocs.pm/#{@app}",
+        extras: ["README.md"]
+      ]
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger]
@@ -22,24 +36,26 @@ defmodule PostgresDescribe.Mixfile do
 
   defp description do
     """
-    Library for manipulating and validating IBAN account numbers.
+    Library for describing postgres tables and saving that output into a given
+    location in your application source.
     """
   end
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "LICENSE*"],
-      maintainers: ["Krzysztof Kempiński"],
+      name: @app,
+      maintainers: ["Brandon Parsons"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/kkempin/exiban"}
+      files: ~w(mix.exs lib README* LICENSE*),
+      links: %{"Github" => @github}
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
+      {:cortex, "~> 0.3", only: [:dev, :test]},
+      {:ex_doc, "~> 0.16", only: :dev, runtime: false},
+      {:private, "~> 0.1.1", only: [:dev, :test]}
     ]
   end
 end
